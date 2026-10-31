@@ -152,6 +152,9 @@ html[dir="rtl"] .step-num{right:auto;left:22px}
 .nudge{border-radius:14px;padding:11px 15px;font-size:14px;font-weight:700;margin:8px 0 18px;display:flex;gap:9px;align-items:center;transition:background .3s}
 .nudge.almost{background:var(--cream);color:#8a6a0c}
 .nudge.free{background:#e6f4d9;color:#3c7a1e}
+.bulk-nudge{border-radius:14px;padding:11px 15px;font-size:14px;font-weight:700;margin:8px 0 14px;background:#e2ebfc;color:#1f4e8c;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bulk-nudge a{color:#1f4e8c;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.bulk-nudge[hidden]{display:none}
 .mini-summary{border-top:1.5px dashed var(--line);padding-top:14px;font-size:15px}
 .mini-summary .row{display:flex;justify-content:space-between;margin-bottom:7px}
 .mini-summary .total{font-weight:800;font-size:20px;border-top:1.5px solid var(--line);padding-top:11px;margin-top:9px}
@@ -481,6 +484,21 @@ img{height:auto}
 .brand:hover .drawit-icon{transform:rotate(-8deg) scale(1.08)}
 @media(max-width:520px){.brand .drawit-icon{width:29px;height:29px}}
 
+
+/* ===== interactive what's-in-the-box scene ===== */
+.box-visual{position:relative;aspect-ratio:1/1.12;width:100%}
+.box-visual .bv-blob{position:absolute;left:6%;top:2%;width:88%;aspect-ratio:1;border-radius:50%;background:#fff0c9}
+.box-visual .bv-box{position:absolute;left:3%;top:12%;width:94%;border-radius:10px;transform:rotate(-3deg);box-shadow:0 30px 50px rgba(80,55,20,.22)}
+.box-visual .bv-item{position:absolute;transition:transform .45s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 16px 18px rgba(80,55,20,.2))}
+.box-visual .bv-item img{width:100%;display:block}
+.bv-guide{left:0;bottom:9%;width:28%;--r:-10deg;transform:rotate(var(--r))}
+.bv-books{left:19%;bottom:0;width:54%;--r:-3deg;transform:rotate(var(--r))}
+.bv-phone{right:1%;bottom:3%;width:23%;--r:8deg;transform:rotate(var(--r))}
+.box-visual .bv-item.is-on{transform:rotate(var(--r)) translateY(-10px) scale(1.04)}
+.bv-badge{position:absolute;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;border:3px solid #fff;box-shadow:0 6px 14px rgba(23,76,63,.25);transition:background .25s,transform .25s}
+.bv-badge.is-on{background:var(--coral);transform:scale(1.2)}
+.inside-list>div.is-on{background:rgba(128,189,66,.09)}
+@media (max-width:600px){.bv-badge{width:28px;height:28px;font-size:11px;border-width:2px}}
 </style>
 </head>
 <body>
@@ -514,7 +532,7 @@ img{height:auto}
       <p class="hero-sub" data-i18n="heroSub">Guided drawing activities with AI-powered supportive insights that help families explore feelings, start conversations, and grow together. Now delivering across Jordan — worldwide coming soon.</p>
       <div class="hero-ctas">
         <button class="btn btn-coral" type="button" onclick="openFlow()" data-i18n="orderNow">Order Drawit →</button>
-        <button class="btn btn-secondary" type="button" onclick="openFlow()" data-i18n="preorderOutside">Outside Jordan? Pre-order →</button>
+        <button class="btn btn-secondary" type="button" onclick="openIntl()" data-i18n="preorderOutside">Outside Jordan? Order worldwide →</button>
       </div>
       <div class="mini-flow">
         <div><span class="mini-icon c-coral">✎</span><span data-i18n="flow1">Draw</span></div><span class="mini-arrow">→</span>
@@ -537,8 +555,23 @@ img{height:auto}
 <!-- WHAT'S INSIDE -->
 <section class="inside" id="inside">
   <div class="container inside-grid">
-    <div class="photo-frame reveal" data-anim="left">
-      <img src="assets/a_clean_3d_3d_illustration_style_scene_on_a_transp.png" alt="A child drawing with the Drawit mascot" loading="lazy">
+    <div class="box-visual reveal" data-anim="left">
+      <div class="bv-blob"></div>
+      <img class="bv-box" src="assets/kit-box.png" alt="The Drawit Kit box" loading="lazy">
+      <div class="bv-item bv-guide" data-items="4">
+        <img src="assets/cut-guide.png" alt="Parent guide book" loading="lazy">
+        <span class="bv-badge" data-badge="4" style="left:-8%;top:-6%">04</span>
+      </div>
+      <div class="bv-item bv-books" data-items="1 2 3">
+        <img src="assets/cut-books.png" alt="Person, House and Tree drawing books" loading="lazy">
+        <span class="bv-badge" data-badge="1" style="left:22%;top:-8%">01</span>
+        <span class="bv-badge" data-badge="2" style="left:52%;top:-13%">02</span>
+        <span class="bv-badge" data-badge="3" style="left:80%;top:-5%">03</span>
+      </div>
+      <div class="bv-item bv-phone" data-items="5">
+        <img src="assets/cut-phone.png" alt="Drawit app access" loading="lazy">
+        <span class="bv-badge" data-badge="5" style="right:-10%;top:-4%">05</span>
+      </div>
     </div>
     <div class="inside-copy reveal" data-anim="right">
       <p class="section-tag" data-i18n="insideTag">WHAT'S IN THE BOX</p>
@@ -580,7 +613,7 @@ img{height:auto}
       <h2 data-i18n="orderTitle">Order your Drawit Kit today.</h2>
       <p data-i18n="orderBody">Delivering across all of Jordan. Outside Jordan? Join the priority list and be first when we launch in your country.</p>
       <ul class="order-perks">
-        <li><span data-i18n="perk1">Delivery in 2–4 business days anywhere in Jordan</span></li>
+        <li><span data-i18n="perk1">Delivery in 1–3 days anywhere in Jordan</span></li>
         <li><span data-i18n="perk2">Flat 3 JOD delivery — free when you order 3+ kits</span></li>
         <li><span data-i18n="perk3">Secure online payment or cash on delivery</span></li>
         <li><span data-i18n="perk4">Order updates on WhatsApp</span></li>
@@ -596,6 +629,7 @@ img{height:auto}
         <span class="qlabel" data-i18n="qtyLabel">kits</span>
       </div>
       <div class="nudge almost" id="nudgeBox">🚚 <span id="nudgeText"></span></div>
+      <div class="bulk-nudge jo-bulk" hidden>🎁 <span class="bulk-text"></span> <a class="bulk-link" target="_blank" rel="noopener"></a></div>
       <div class="mini-summary">
         <div class="row"><span data-i18n="sumSub">Subtotal</span><span><span id="subVal">25</span> <span data-i18n="jod">JOD</span></span></div>
         <div class="row"><span data-i18n="sumDel">Delivery (Jordan)</span><span id="delVal">3 JOD</span></div>
@@ -666,7 +700,7 @@ img{height:auto}
       <div class="socials">
         <a href="https://www.instagram.com/drawit.kids/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.2.1 4.7 1.7 4.8 4.8.1 1.3.1 1.6.1 4.9s0 3.6-.1 4.9c-.1 3.1-1.6 4.7-4.8 4.8-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-3.2-.1-4.7-1.7-4.8-4.8C2.2 15.6 2.2 15.3 2.2 12s0-3.6.1-4.9C2.4 4 4 2.4 7.1 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.6a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-10.5a1.44 1.44 0 11-2.9 0 1.44 1.44 0 012.9 0z"/></svg></a>
         <a href="https://www.facebook.com/drawit.kids/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v7h4v-7h3l1-4h-4V9c0-.7.3-1 1-1z"/></svg></a>
-        <a href="https://www.linkedin.com/company/drawithealth/?viewAsMember=true" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M7 9H3v12h4zM5 3a2 2 0 100 4 2 2 0 000-4zm5 6h4v2c1-1.5 2.5-2.4 4.4-2.4 3 0 4.6 1.9 4.6 5.6V21h-4v-6c0-1.8-.6-3-2.2-3-1.8 0-2.8 1.2-2.8 3.6V21h-4z"/></svg></a>
+        <a href="https://www.linkedin.com/company/drawithealth/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M7 9H3v12h4zM5 3a2 2 0 100 4 2 2 0 000-4zm5 6h4v2c1-1.5 2.5-2.4 4.4-2.4 3 0 4.6 1.9 4.6 5.6V21h-4v-6c0-1.8-.6-3-2.2-3-1.8 0-2.8 1.2-2.8 3.6V21h-4z"/></svg></a>
       </div>
     </div>
   </div>
@@ -692,12 +726,12 @@ img{height:auto}
         <button type="button" onclick="goJordan()">
           <div class="flag">🇯🇴</div>
           <h3 data-i18n="fcJo">Jordan</h3>
-          <p data-i18n="fcJoP">Delivery in 2–4 business days · pay online or cash on delivery</p>
+          <p data-i18n="fcJoP">Delivery in 1–3 days · pay online or cash on delivery</p>
         </button>
         <button type="button" onclick="goIntl()">
           <div class="flag"><img class="flag-img" src="assets/char-earth.png" alt=""></div>
           <h3 data-i18n="fcIntl">Outside Jordan</h3>
-          <p data-i18n="fcIntlP">Join the priority waiting list — coming soon!</p>
+          <p data-i18n="fcIntlP">We ship worldwide — pay securely online in USD</p>
         </button>
       </div>
     </div>
@@ -743,6 +777,7 @@ img{height:auto}
         <span class="qlabel" data-i18n="qtyLabel">kits</span>
       </div>
       <div class="nudge almost" id="nudgeBox2">🚚 <span id="nudgeText2"></span></div>
+      <div class="bulk-nudge jo-bulk" hidden>🎁 <span class="bulk-text"></span> <a class="bulk-link" target="_blank" rel="noopener"></a></div>
 
       <div class="pay-opts">
         <label class="pay-opt sel" id="po_cod"><input type="radio" name="pay" value="cod" checked onchange="selPay('cod')"><span>💵 <strong data-i18n="payCod">Cash on delivery</strong></span></label>
@@ -760,40 +795,63 @@ img{height:auto}
       <button class="btn btn-coral btn-block" onclick="submitJordan()" data-i18n="ckPlace">Place order</button>
     </div>
 
-    <!-- STEP 2B: waiting list -->
-    <div class="fstep" id="stepWaitlist" hidden>
-      <h2 data-i18n="wlTitle">Drawit is coming to your country 🌍</h2>
-      <p class="sub" data-i18n="wlSub">We currently deliver inside Jordan and are preparing for international shipping. Join the priority waiting list and we'll contact you when Drawit becomes available in your country.</p>
-      <div class="form-error" id="wlError" data-i18n="formErr">Please fill all required fields, check the phone number, and accept the terms.</div>
+    <!-- STEP 2B: international checkout -->
+    <div class="fstep" id="stepIntl" hidden>
+      <h2 data-i18n="ilTitle">International order 🌍</h2>
+      <p class="sub" data-i18n="ilSub">We ship the Drawit Kit worldwide — delivery takes around 2 weeks. International orders are charged securely in US dollars.</p>
+      <div class="form-error" id="ilError" data-i18n="formErr">Please fill all required fields, check the phone number, and accept the terms.</div>
 
-      <div class="fgroup"><label data-i18n="fName2">Full name <span class="req">*</span></label><input id="wl_name" autocomplete="name"></div>
+      <div class="fset-title" data-i18n="ckContact">Contact information</div>
+      <div class="fgroup"><label data-i18n="fName2">Full name <span class="req">*</span></label><input id="il_name" autocomplete="name"></div>
       <div class="fgrid">
-        <div class="fgroup"><label data-i18n="fEmail">Email address <span class="req">*</span></label><input id="wl_email" type="email" autocomplete="email"></div>
-        <div class="fgroup"><label data-i18n="fWa2">WhatsApp / mobile number <span class="req">*</span></label><input id="wl_wa" inputmode="tel" placeholder="+974..."></div>
+        <div class="fgroup"><label data-i18n="fEmail">Email address <span class="req">*</span></label><input id="il_email" type="email" autocomplete="email"></div>
+        <div class="fgroup"><label data-i18n="fWa2">WhatsApp / mobile number <span class="req">*</span></label><input id="il_wa" inputmode="tel" placeholder="+974..." autocomplete="tel"></div>
       </div>
+
+      <div class="fset-title" data-i18n="ilShipping">Shipping address</div>
       <div class="fgrid">
-        <div class="fgroup"><label data-i18n="fCountry">Country <span class="req">*</span></label><input id="wl_country" autocomplete="country-name"></div>
-        <div class="fgroup"><label data-i18n="fCity">City / area <span class="req">*</span></label><input id="wl_city"></div>
+        <div class="fgroup"><label data-i18n="fCountry">Country <span class="req">*</span></label><input id="il_country" autocomplete="country-name"></div>
+        <div class="fgroup"><label data-i18n="fCity">City / area <span class="req">*</span></label><input id="il_city" autocomplete="address-level2"></div>
       </div>
+      <div class="fgroup"><label data-i18n="fAddr">Full address <span class="req">*</span></label><input id="il_addr" autocomplete="street-address"></div>
       <div class="fgrid">
-        <div class="fgroup"><label data-i18n="fPostal">Postal code</label><input id="wl_postal" autocomplete="postal-code"></div>
-        <div class="fgroup"><label data-i18n="fQty2">Kits you may want</label>
-          <select id="wl_qty"><option>1</option><option>2</option><option>3</option><option>4</option><option data-i18n="fQtyMore">5 or more</option></select>
-        </div>
+        <div class="fgroup"><label data-i18n="fPostal">Postal code</label><input id="il_postal" autocomplete="postal-code"></div>
+        <div class="fgroup"><label data-i18n="fNotes">Delivery notes</label><input id="il_notes"></div>
       </div>
-      <div class="fgrid">
-        <div class="fgroup"><label data-i18n="fFor">Buying for</label>
-          <select id="wl_for">
-            <option data-i18n="forChild">My child</option><option data-i18n="forGift">A gift</option><option data-i18n="forSchool">A school</option><option data-i18n="forClinic">A clinic</option><option data-i18n="forOrg">An organization</option><option data-i18n="forOther">Other</option>
-          </select>
-        </div>
-        <div class="fgroup"><label data-i18n="fLang">Preferred language</label>
-          <select id="wl_lang"><option>العربية</option><option>English</option></select>
-        </div>
+
+      <div class="fset-title" data-i18n="ckOrder">Order &amp; payment</div>
+      <div class="qty" style="margin:6px 0 8px">
+        <button type="button" onclick="chgIQty(-1)">−</button>
+        <span class="qval" id="iQtyVal">1</span>
+        <button type="button" onclick="chgIQty(1)">+</button>
+        <span class="qlabel" data-i18n="qtyLabel">kits</span>
       </div>
-      <div class="fgroup"><label data-i18n="fMsg">Message or question (optional)</label><textarea id="wl_msg" rows="2"></textarea></div>
-      <label class="check"><input type="checkbox" id="wl_consent"><span data-i18n="fConsent">I agree to receive availability and launch updates from Drawit <span class="req">*</span></span></label>
-      <button class="btn btn-coral btn-block" onclick="submitWaitlist()" data-i18n="wlJoin">Join the waiting list</button>
+      <div class="bulk-nudge il-bulk" hidden>🎁 <span class="bulk-text"></span> <a class="bulk-link" target="_blank" rel="noopener"></a></div>
+
+      <div class="summary-box">
+        <div class="row"><span><span data-i18n="sbKit">Drawit Kit</span> × <span id="iQtyMirror">1</span></span><span>$<span id="iSub">35</span></span></div>
+        <div class="row"><span data-i18n="ilShipFee">International shipping</span><span>$<span id="iDel">50</span></span></div>
+        <div class="row total"><span data-i18n="sbTotal">Total</span><span>$<span id="iTot">85</span> <span style="font-size:13px;color:var(--muted)">USD</span></span></div>
+      </div>
+      <p class="pay-note" data-i18n="ilPayNote">You'll pay on Stripe's secure checkout page — we never see or store your card details.</p>
+
+      <label class="check"><input type="checkbox" id="il_terms"><span data-i18n="fTerms">I agree to the Terms &amp; Conditions and Privacy Policy <span class="req">*</span></span></label>
+      <button class="btn btn-coral btn-block" onclick="submitIntl()" data-i18n="ilPay">Pay securely →</button>
+    </div>
+
+    <!-- Payment return: verifying -->
+    <div class="fstep confirm" id="stepVerify" hidden>
+      <div class="big">🔒</div>
+      <h2 data-i18n="vTitle">Confirming your payment…</h2>
+      <p class="csub" data-i18n="vSub">One moment — we're verifying it with Stripe.</p>
+    </div>
+
+    <!-- Payment canceled -->
+    <div class="fstep confirm" id="stepCanceled" hidden>
+      <div class="big">💛</div>
+      <h2 data-i18n="cxTitle">Payment not completed</h2>
+      <p class="csub" data-i18n="cxSub">No charge was made. Your order details are saved — you can try again anytime, or message us on WhatsApp and we'll help.</p>
+      <button class="btn btn-coral btn-small" style="margin-top:16px" onclick="openFlow()" data-i18n="cxRetry">Try again</button>
     </div>
 
     <!-- STEP 3A: Jordan confirmation -->
@@ -805,7 +863,7 @@ img{height:auto}
         <div class="row"><span data-i18n="cjNum">Order number</span><strong id="cj_ordernum">DR-000123</strong></div>
         <div class="row"><span data-i18n="cjPay">Payment method</span><strong id="cj_paymethod"></strong></div>
         <div class="row"><span data-i18n="cjTotal">Total</span><strong id="cj_total"></strong></div>
-        <div class="row"><span data-i18n="cjEta">Expected delivery</span><strong data-i18n="cjEtaV">2–4 business days</strong></div>
+        <div class="row"><span data-i18n="cjEta">Expected delivery</span><strong id="cj_eta" data-i18n="cjEtaV">1–3 days</strong></div>
       </div>
       <p class="csub" data-i18n="cjWa">We'll send your order updates through WhatsApp 💬</p>
       <button class="btn btn-secondary btn-small" style="margin-top:16px" onclick="closeFlow()" data-i18n="closeBtn">Close</button>
@@ -823,7 +881,10 @@ img{height:auto}
 
 <script>
 /* ================= CONFIG ================= */
-const PRICE = 25, DELIVERY = 3, FREE_AT = 3;
+const PRICE = 25, DELIVERY = 3, FREE_AT = 3;          // Jordan (JOD): 28 / 53 / 75
+const INTL_UNIT = 35;                                  // International kit price (USD)
+const INTL_SHIP_TIERS = {1:50, 2:70, 3:120, 4:150};    // shipping by quantity (USD)
+function intlShip(q){ return q<=4 ? INTL_SHIP_TIERS[q] : 150*Math.floor(q/4) + (INTL_SHIP_TIERS[q%4]||0); }
 /* Paste your Google Apps Script Web App URL here (see drawit-orders-apps-script.gs setup notes) */
 const SHEET_WEBAPP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 let qty = 1, payMethod = 'cod', lang = 'en';
@@ -832,7 +893,7 @@ let qty = 1, payMethod = 'cod', lang = 'en';
 const T = {
 en:{
   navInside:"What's inside", navHow:"How it works", navOrder:"Order", navFaq:"FAQ", openApp:"Open App", openAppFooter:"📱 Open Drawit App",
-  orderNow:"Order the Drawit Kit →", seeInside:"See what's inside", preorderOutside:"Outside Jordan? Pre-order →",
+  orderNow:"Order the Drawit Kit →", seeInside:"See what's inside", preorderOutside:"Outside Jordan? Order worldwide →",
   ages:"For ages 4–12", kicker:"Beyond Words.",
   heroTitle:"Understand what your child is trying to express.",
   heroSub:"The Drawit Kit combines guided drawing activities with supportive AI-powered insights to help families explore feelings, start deeper conversations, and grow closer.",
@@ -851,8 +912,8 @@ en:{
   ps3T:"Scan with the app", ps3B:"One photo captures the finished drawing.",
   ps4T:"Understand together", ps4B:"Supportive insights and gentle conversation starters.",
   orderTag:"READY TO GO BEYOND WORDS?", orderTitle:"Order your Drawit Kit today.",
-  orderBody:"Delivering across all of Jordan. Outside Jordan? Join the priority list and be first when we launch in your country.",
-  perk1:"Delivery in 2–4 business days anywhere in Jordan",
+  orderBody:"Delivering across all of Jordan — and shipping worldwide with secure online payment in USD.",
+  perk1:"Delivery in 1–3 days anywhere in Jordan",
   perk2:"Flat 3 JOD delivery — free when you order 3+ kits",
   perk3:"Secure online payment or cash on delivery",
   perk4:"Order updates on WhatsApp",
@@ -876,15 +937,15 @@ en:{
   q1:"What age is Drawit designed for?", a1:"Drawit is designed for children ages 4–12.",
   q2:"How much is delivery?", a2:"A flat 3 JOD anywhere in Jordan — and completely free when you order 3 or more kits.",
   q3:"Can I pay cash on delivery?", a3:"Yes. You can pay cash when your kit arrives, or pay online securely by card.",
-  q4:"Is Drawit available outside Jordan?", a4:"International orders are handled through our priority waiting list while we expand availability — join it and we'll contact you the moment we deliver to your country.",
+  q4:"Is Drawit available outside Jordan?", a4:"Yes — we ship worldwide. International orders are charged securely in US dollars ($35 per kit, plus shipping starting at $50) and delivery takes around 2 weeks.",
   q5:"What's the return policy?", a5:"You can return an unused kit in its original condition within 7 days of delivery. Message us on WhatsApp and we'll take care of it.",
   q6:"Does Drawit diagnose mental-health conditions?", a6:"No. Drawit provides supportive insights and does not replace qualified medical or mental-health professionals.",
   contact:"Contact", follow:"Follow Drawit", footerLine:"Beyond Words.",
   footerNote:"Supportive insights. Not a diagnostic or medical tool.",
   fcTitle:"Where should we deliver your Drawit kit?",
   fcSub:"Choose the delivery destination — not where you are right now.",
-  fcJo:"Jordan", fcJoP:"Delivery in 2–4 business days · pay online or cash on delivery",
-  fcIntl:"Outside Jordan", fcIntlP:"Join the priority waiting list — coming soon!",
+  fcJo:"Jordan", fcJoP:"Delivery in 1–3 days · pay online or cash on delivery",
+  fcIntl:"Outside Jordan", fcIntlP:"We ship worldwide — pay securely online in USD",
   ckTitle:"Checkout — Jordan", ckSub:"Just a few details to bring Drawit to your door.",
   formErr:"Please fill all required fields, check the phone number, and accept the terms.",
   ckContact:"Contact information", fName:"Parent/caregiver full name *", fMobile:"Mobile number *", fEmail:"Email address *",
@@ -905,16 +966,26 @@ en:{
   fConsent:"I agree to receive availability and launch updates from Drawit *",
   wlJoin:"Join the waiting list",
   cjTitle:"Your Drawit order is confirmed!", cjSub:"Thank you for helping a child feel seen, understood and supported.",
-  cjNum:"Order number", cjPay:"Payment method", cjTotal:"Total", cjEta:"Expected delivery", cjEtaV:"2–4 business days",
+  cjNum:"Order number", cjPay:"Payment method", cjTotal:"Total", cjEta:"Expected delivery", cjEtaV:"1–3 days",
   cjWa:"We'll send your order updates through WhatsApp 💬",
   cwTitle:"You're on the Drawit priority list!",
   cwSub:"We'll contact you as soon as delivery becomes available in your country. As an early international supporter, you'll be among the first to receive shipping updates and launch offers.",
   closeBtn:"Close", payCodV:"Cash on delivery", payOnlineV:"Paid online",
-  sending:"Sending…", netErr:"We couldn\u2019t send your request \u2014 please check your connection and try again, or message us on WhatsApp."
+  sending:"Sending…", netErr:"We couldn\u2019t send your request \u2014 please check your connection and try again, or message us on WhatsApp.",
+  ilTitle:"International order 🌍", ilSub:"We ship the Drawit Kit worldwide — delivery takes around 2 weeks. International orders are charged securely in US dollars.",
+  ilShipping:"Shipping address", ilShipFee:"International shipping",
+  ilPayNote:"You'll pay on Stripe's secure checkout page — we never see or store your card details.",
+  ilPay:"Pay securely →", etaIntl:"around 2 weeks",
+  vTitle:"Confirming your payment…", vSub:"One moment — we're verifying it with Stripe.",
+  cxTitle:"Payment not completed", cxSub:"No charge was made. Your order details are saved — you can try again anytime, or message us on WhatsApp and we'll help.",
+  cxRetry:"Try again",
+  bulkText:"Ordering more than 5 kits? You qualify for a special bulk discount —",
+  bulkCta:"message us on WhatsApp",
+  bulkWa:"Hello Drawit! I would like to order {q} kits. Can I get the bulk discount?"
 },
 ar:{
   navInside:"محتويات المجموعة", navHow:"كيف يعمل", navOrder:"اطلب", navFaq:"الأسئلة", openApp:"افتح التطبيق", openAppFooter:"📱 افتح تطبيق Drawit",
-  orderNow:"اطلب مجموعة Drawit ←", seeInside:"شاهد ما بداخل الصندوق", preorderOutside:"خارج الأردن؟ اطلب مسبقًا ←",
+  orderNow:"اطلب مجموعة Drawit ←", seeInside:"شاهد ما بداخل المجموعة", preorderOutside:"خارج الأردن؟ اطلب الآن ←",
   ages:"للأعمار ٤–١٢ سنة", kicker:"ما وراء الكلمات.",
   heroTitle:"افهم ما يحاول طفلك التعبير عنه.",
   heroSub:"تجمع مجموعة Drawit بين أنشطة الرسم الموجّه ورؤى داعمة بالذكاء الاصطناعي، لتساعد العائلة على استكشاف مشاعر الطفل، وبدء حوارات أعمق، والتقرّب أكثر.",
@@ -933,17 +1004,17 @@ ar:{
   ps3T:"التصوير عبر التطبيق", ps3B:"صورة واحدة تلتقط الرسمة المكتملة.",
   ps4T:"افهموا معًا", ps4B:"رؤى داعمة وأسئلة لطيفة تساعد على بدء حوار مع الطفل.",
   orderTag:"جاهزون لما هو أبعد من الكلمات؟", orderTitle:"اطلب مجموعة Drawit اليوم.",
-  orderBody:"نوصل مجموعة Drawit إلى جميع محافظات الأردن. وإذا كنت خارج الأردن، يمكنك الطلب المسبق وسنتواصل معك عند توفر التوصيل إلى بلدك.",
-  perk1:"توصيل خلال ٢–٤ أيام عمل لأي مكان في الأردن",
-  perk2:"رسوم توصيل ثابتة ٣ دنانير — ومجانية عند طلب ٣+ صناديق",
+  orderBody:"نوصل مجموعة Drawit إلى جميع محافظات الأردن — ونشحن لجميع دول العالم مع دفع آمن أونلاين بالدولار.",
+  perk1:"توصيل خلال ١–٣ أيام لأي مكان في الأردن",
+  perk2:"رسوم توصيل ثابتة ٣ دنانير — ومجانية عند طلب ٣+ مجموعات",
   perk3:"دفع آمن أونلاين أو نقدًا عند الاستلام",
   perk4:"تحديثات الطلب عبر الواتساب",
-  jod:"د.أ", perKit:"/ للصندوق", qtyLabel:"صناديق",
+  jod:"د.أ", perKit:"/ للمجموعة", qtyLabel:"مجموعات",
   incl:"شامل كراسات الرسم الثلاث، دليل الأهل والوصول للتطبيق",
   sumSub:"المجموع الفرعي", sumDel:"التوصيل (الأردن)", sumTotal:"الإجمالي", free:"مجاني 🎉",
   nudgeFree:"مبروك! التوصيل مجاني لطلبك 🎉",
-  nudgeAlmost:"أضيفي صندوقًا واحدًا إضافيًا واحصلي على توصيل مجاني!",
-  nudgeInfo:"أضيفي ٣ صناديق أو أكثر واحصلي على توصيل مجاني لأي مكان في الأردن.",
+  nudgeAlmost:"أضف مجموعة واحدة إضافية واحصل على توصيل مجاني!",
+  nudgeInfo:"أضف ٣ مجموعات أو أكثر واحصل على توصيل مجاني لأي مكان في الأردن.",
   communityTag:"للعائلات والمجتمعات",
   communityTitle:"مصمم للعائلات. جاهز للمجتمعات.",
   institutionTitle:"المؤسسات",
@@ -954,45 +1025,55 @@ ar:{
   proofBody:"تشكّل Drawit من خلال جلسات موجّهة، وأبحاث، واختبار مستمر للمنتج.",
   stat1:"جلسة موجّهة / تجربة", stat2:"نسخة مباعة من إصدارنا الأول", stat3:"سنة",
   faqTag:"الأسئلة الشائعة", faqTitle:"أسئلة يطرحها الأهل عادةً.",
-  faqLead:"تحتاجين شيئًا آخر؟ تواصلي معنا على", faqOr:"أو", faqWa:"راسلينا واتساب",
+  faqLead:"تحتاج شيئًا آخر؟ تواصل معنا على", faqOr:"أو", faqWa:"راسلنا واتساب",
   q1:"لأي عمر صُمم Drawit؟", a1:"صُمم Drawit للأطفال من عمر ٤ إلى ١٢ سنة.",
-  q2:"كم تبلغ رسوم التوصيل؟", a2:"٣ دنانير ثابتة لأي مكان في الأردن — ومجانية تمامًا عند طلب ٣ صناديق أو أكثر.",
-  q3:"هل يمكنني الدفع عند الاستلام؟", a3:"نعم. يمكنك الدفع نقدًا عند وصول الصندوق، أو الدفع أونلاين ببطاقتك بشكل آمن.",
-  q4:"هل Drawit متوفر خارج الأردن؟", a4:"الطلبات الدولية تتم عبر قائمة الانتظار ذات الأولوية بينما نتوسع — انضمي إليها وسنتواصل معك فور توفر التوصيل في بلدك.",
-  q5:"ما سياسة الإرجاع؟", a5:"يمكنك إرجاع الصندوق غير المستخدم بحالته الأصلية خلال ٧ أيام من الاستلام. راسلينا واتساب وسنهتم بالأمر.",
+  q2:"كم تبلغ رسوم التوصيل؟", a2:"٣ دنانير ثابتة لأي مكان في الأردن — ومجانية تمامًا عند طلب ٣ مجموعات أو أكثر.",
+  q3:"هل يمكنني الدفع عند الاستلام؟", a3:"نعم. يمكنك الدفع نقدًا عند وصول المجموعة، أو الدفع أونلاين ببطاقتك بشكل آمن.",
+  q4:"هل Drawit متوفر خارج الأردن؟", a4:"نعم — نشحن لجميع دول العالم. الطلبات الدولية تُدفع بأمان بالدولار الأمريكي (٣٥$ للمجموعة + شحن يبدأ من ٥٠$)، ويستغرق التوصيل حوالي أسبوعين.",
+  q5:"ما سياسة الإرجاع؟", a5:"يمكنك إرجاع المجموعة غير المستخدمة بحالتها الأصلية خلال ٧ أيام من الاستلام. راسلنا واتساب وسنهتم بالأمر.",
   q6:"هل يشخّص Drawit حالات الصحة النفسية؟", a6:"لا. يقدم Drawit رؤى داعمة ولا يغني عن المختصين الطبيين أو النفسيين المؤهلين.",
-  contact:"تواصلي معنا", follow:"تابعي Drawit", footerLine:"أبعد من الكلمات.",
+  contact:"تواصل معنا", follow:"تابع Drawit", footerLine:"ما وراء الكلمات.",
   footerNote:"رؤى داعمة. ليس أداة تشخيصية أو طبية.",
-  fcTitle:"أين نوصل صندوق Drawit؟",
-  fcSub:"اختاري وجهة التوصيل — وليس مكان تواجدك الحالي.",
-  fcJo:"الأردن", fcJoP:"توصيل خلال ٢–٤ أيام عمل · دفع أونلاين أو عند الاستلام",
-  fcIntl:"خارج الأردن", fcIntlP:"انضمي لقائمة الانتظار ذات الأولوية — قريبًا!",
-  ckTitle:"إتمام الطلب — الأردن", ckSub:"بعض التفاصيل فقط لنوصل Drawit إلى بابك.",
+  fcTitle:"أين نوصل مجموعة Drawit؟",
+  fcSub:"اختر وجهة التوصيل — وليس مكان تواجدك الحالي.",
+  fcJo:"الأردن", fcJoP:"توصيل خلال ١–٣ أيام · دفع أونلاين أو عند الاستلام",
+  fcIntl:"خارج الأردن", fcIntlP:"نشحن لجميع دول العالم — ادفع بأمان أونلاين بالدولار",
+  ckTitle:"إتمام الطلب — الأردن", ckSub:"بعض التفاصيل فقط لنوصل مجموعة Drawit إلى بابك.",
   formErr:"يرجى تعبئة جميع الحقول المطلوبة والتأكد من رقم الهاتف والموافقة على الشروط.",
   ckContact:"معلومات التواصل", fName:"اسم ولي الأمر الكامل *", fMobile:"رقم الموبايل *", fEmail:"البريد الإلكتروني *",
   fSameWa:"رقم الواتساب هو نفس رقم الموبايل", fWa:"رقم الواتساب",
-  ckDelivery:"معلومات التوصيل", fGov:"المحافظة *", fGovPh:"اختاري المحافظة", fCity:"المدينة / المنطقة *",
+  ckDelivery:"معلومات التوصيل", fGov:"المحافظة *", fGovPh:"اختر المحافظة", fCity:"المدينة / المنطقة *",
   fAddr:"العنوان الكامل *", fBldg:"رقم البناية", fFloor:"الطابق / الشقة", fLandmark:"أقرب معلم مميز", fNotes:"ملاحظات للتوصيل",
   ckOrder:"الطلب والدفع",
   payCod:"الدفع عند الاستلام", payOnline:"الدفع أونلاين",
   payNote:"الدفع الأونلاين يتم عبر صفحة دفع آمنة — لا نخزّن بيانات بطاقتك أبدًا.",
-  sbKit:"صندوق Drawit", sbDel:"رسوم التوصيل", sbTotal:"الإجمالي",
+  sbKit:"مجموعة Drawit", sbDel:"رسوم التوصيل", sbTotal:"الإجمالي",
   fTerms:"أوافق على الشروط والأحكام وسياسة الخصوصية *", ckPlace:"تأكيد الطلب",
   wlTitle:"Drawit قادم إلى بلدك 🌍",
-  wlSub:"نوصل حاليًا داخل الأردن ونستعد للشحن الدولي. انضمي لقائمة الانتظار ذات الأولوية وسنتواصل معك فور توفر Drawit في بلدك.",
+  wlSub:"نوصل حاليًا داخل الأردن ونستعد للشحن الدولي. انضم لقائمة الانتظار ذات الأولوية وسنتواصل معك فور توفر Drawit في بلدك.",
   fName2:"الاسم الكامل *", fWa2:"رقم الواتساب / الموبايل *", fCountry:"الدولة *", fPostal:"الرمز البريدي",
   fQty2:"عدد الصناديق المتوقع", fQtyMore:"٥ أو أكثر", fFor:"الطلب لأجل",
   forChild:"طفلي", forGift:"هدية", forSchool:"مدرسة", forClinic:"عيادة", forOrg:"مؤسسة", forOther:"أخرى",
   fLang:"اللغة المفضلة", fMsg:"رسالة أو سؤال (اختياري)",
   fConsent:"أوافق على استلام تحديثات التوفر والإطلاق من Drawit *",
   wlJoin:"انضمّي لقائمة الانتظار",
-  cjTitle:"تم تأكيد طلبك من Drawit!", cjSub:"شكرًا لأنك تساعدين طفلًا على أن يشعر بأنه مرئي، مفهوم، ومدعوم.",
-  cjNum:"رقم الطلب", cjPay:"طريقة الدفع", cjTotal:"الإجمالي", cjEta:"التوصيل المتوقع", cjEtaV:"٢–٤ أيام عمل",
+  cjTitle:"تم تأكيد طلبك من Drawit!", cjSub:"شكرًا لأنك تساعد طفلًا على أن يشعر بأنه مرئي، مفهوم، ومدعوم.",
+  cjNum:"رقم الطلب", cjPay:"طريقة الدفع", cjTotal:"الإجمالي", cjEta:"التوصيل المتوقع", cjEtaV:"١–٣ أيام",
   cjWa:"سنرسل لك تحديثات طلبك عبر الواتساب 💬",
   cwTitle:"أنت الآن على قائمة أولوية Drawit!",
   cwSub:"سنتواصل معك فور توفر التوصيل في بلدك. وكداعمة دولية مبكرة، ستكونين من أوائل من يصلهم عروض الإطلاق وتحديثات الشحن.",
   closeBtn:"إغلاق", payCodV:"الدفع عند الاستلام", payOnlineV:"دفع أونلاين",
-  sending:"جارٍ الإرسال…", netErr:"تعذّر إرسال طلبك — تأكدي من الاتصال بالإنترنت وحاولي مجددًا، أو راسلينا واتساب."
+  sending:"جارٍ الإرسال…", netErr:"تعذّر إرسال طلبك — تأكد من الاتصال بالإنترنت وحاول مجددًا، أو راسلنا واتساب.",
+  ilTitle:"طلب دولي 🌍", ilSub:"نشحن مجموعة Drawit لجميع دول العالم — يستغرق التوصيل حوالي أسبوعين. تُدفع الطلبات الدولية بأمان بالدولار الأمريكي.",
+  ilShipping:"عنوان الشحن", ilShipFee:"الشحن الدولي",
+  ilPayNote:"ستدفع عبر صفحة Stripe الآمنة — لا نرى بيانات بطاقتك ولا نخزّنها أبدًا.",
+  ilPay:"ادفع بأمان ←", etaIntl:"حوالي أسبوعين",
+  vTitle:"جارٍ تأكيد الدفع…", vSub:"لحظة واحدة — نتحقق من العملية مع Stripe.",
+  cxTitle:"لم يكتمل الدفع", cxSub:"لم يتم أي خصم. تفاصيل طلبك محفوظة — يمكنك المحاولة مجددًا في أي وقت، أو راسلنا واتساب وسنساعدك.",
+  cxRetry:"حاول مجددًا",
+  bulkText:"تطلب أكثر من ٥ مجموعات؟ يحق لك خصم خاص للكميات —",
+  bulkCta:"راسلنا واتساب",
+  bulkWa:"مرحبًا Drawit! أرغب بطلب {q} مجموعات، هل يمكنني الحصول على خصم الكمية؟"
 }};
 
 document.getElementById('langToggle').addEventListener('click', function(){
@@ -1013,7 +1094,19 @@ document.getElementById('langToggle').addEventListener('click', function(){
 
 /* ================= PRICING ================= */
 function fees(){ return qty >= FREE_AT ? 0 : DELIVERY; }
-function chgQty(d){ qty = Math.min(20, Math.max(1, qty + d)); updateTotals(); }
+var BULK_AT = 6; // 6+ kits: special discount via WhatsApp
+function updateBulk(selector, q){
+  var t = T[lang];
+  document.querySelectorAll(selector).forEach(function(box){
+    box.hidden = q < BULK_AT;
+    if(q < BULK_AT) return;
+    box.querySelector('.bulk-text').textContent = t.bulkText;
+    var a = box.querySelector('.bulk-link');
+    a.textContent = t.bulkCta;
+    a.href = 'https://wa.me/962790222936?text=' + encodeURIComponent(t.bulkWa.replace('{q}', q));
+  });
+}
+function chgQty(d){ qty = Math.min(999, Math.max(1, qty + d)); updateTotals(); }
 function updateTotals(){
   var t = T[lang], sub = PRICE*qty, del = fees(), tot = sub+del;
   document.getElementById('qtyVal').textContent = qty;
@@ -1032,11 +1125,12 @@ function updateTotals(){
     var b=document.getElementById(p[0]); if(!b) return;
     b.className=cls; document.getElementById(p[1]).textContent=msg;
   });
+  updateBulk('.jo-bulk', qty);
 }
 
 /* ================= FLOW ================= */
 var overlay = document.getElementById('flowOverlay');
-var fsteps = ['stepCountry','stepCheckout','stepWaitlist','stepConfirmJo','stepConfirmWl'];
+var fsteps = ['stepCountry','stepCheckout','stepIntl','stepConfirmJo','stepConfirmWl','stepVerify','stepCanceled'];
 function showStep(id, progress){
   fsteps.forEach(function(s){document.getElementById(s).hidden = (s!==id)});
   document.querySelectorAll('#flowSteps .fs').forEach(function(b,i){b.classList.toggle('on', i<progress)});
@@ -1046,7 +1140,8 @@ function openFlow(){ overlay.classList.add('open'); document.body.style.overflow
 function closeFlow(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
 overlay.addEventListener('click', function(e){ if(e.target===overlay) closeFlow(); });
 function goJordan(){ showStep('stepCheckout',2); updateTotals(); }
-function goIntl(){ showStep('stepWaitlist',2); }
+function goIntl(){ showStep('stepIntl',2); updateIntlTotals(); }
+function openIntl(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; showStep('stepIntl',2); updateIntlTotals(); }
 function toggleWa(){ document.getElementById('waGroup').hidden = document.getElementById('jo_sameWa').checked; }
 function selPay(v){
   payMethod = v;
@@ -1060,17 +1155,23 @@ function markErr(id, bad){ var el=document.getElementById(id); el.classList.remo
 
 async function sendToSheet(payload){
   if(!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.indexOf('http') !== 0){
-    console.warn('SHEET_WEBAPP_URL not set \u2014 running in demo mode, data not saved.');
-    return {ok:true, demo:true};
+    console.warn('SHEET_WEBAPP_URL not set \u2014 demo mode, nothing saved or charged.');
+    return {ok:true, demo:true, orderNumber:'DR-DEMO-'+Math.floor(1000+Math.random()*9000)};
   }
-  /* text/plain keeps this a "simple" request so the browser doesn't block it (no CORS preflight) */
-  var res = await fetch(SHEET_WEBAPP_URL, {
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify(payload)
-  });
-  return res.json();
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, 20000);
+  try{
+    /* text/plain keeps this a "simple" request (no CORS preflight) */
+    var res = await fetch(SHEET_WEBAPP_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload),
+      signal: ctrl.signal
+    });
+    return await res.json();
+  } finally { clearTimeout(timer); }
 }
+function pageUrl(){ return location.origin + location.pathname; }
 
 function setBusy(btn, busy){
   if(!btn) return;
@@ -1092,12 +1193,9 @@ async function submitJordan(){
   errBox.style.display = bad ? 'block' : 'none';
   if(bad) return;
 
-  var t = T[lang];
-  var orderNumber = 'DR-' + String(Math.floor(100000+Math.random()*899999));
   var mobile = document.getElementById('jo_mobile').value.trim();
   var payload = {
-    type:'order',
-    orderNumber: orderNumber,
+    type:'order', region:'JO', paymentMethod: payMethod, returnUrl: pageUrl(),
     name: document.getElementById('jo_name').value.trim(),
     mobile: mobile,
     whatsapp: document.getElementById('jo_sameWa').checked ? mobile : document.getElementById('jo_wa').value.trim(),
@@ -1109,75 +1207,118 @@ async function submitJordan(){
     floor: document.getElementById('jo_floor').value.trim(),
     landmark: document.getElementById('jo_landmark').value.trim(),
     notes: document.getElementById('jo_notes').value.trim(),
-    qty: qty, unitPrice: PRICE, subtotal: PRICE*qty,
-    deliveryFee: fees(), total: PRICE*qty+fees(),
-    paymentMethod: payMethod==='cod' ? 'Cash on delivery' : 'Online',
-    lang: lang
+    qty: qty, lang: lang
   };
-
   var btn = document.querySelector('#stepCheckout .btn-block');
   setBusy(btn, true);
   try{
     var r = await sendToSheet(payload);
     if(!r || r.ok !== true) throw new Error(r && r.error);
-    document.getElementById('cj_ordernum').textContent = orderNumber;
+    if(payMethod === 'online' && r.pay_url){
+      window.location.href = r.pay_url;   /* Stripe hosted checkout */
+      return;                             /* keep button busy during redirect */
+    }
+    var t = T[lang];
+    document.getElementById('cj_ordernum').textContent = r.orderNumber || '';
+    document.getElementById('cj_eta').textContent = t.cjEtaV;
     document.getElementById('cj_paymethod').textContent = payMethod==='cod' ? t.payCodV : t.payOnlineV;
-    document.getElementById('cj_total').textContent = (PRICE*qty+fees()) + ' ' + t.jod;
-    /* PRODUCTION (online payments): after saving the order, redirect to the
-       payment gateway's hosted checkout here instead of showing confirmation. */
+    document.getElementById('cj_total').textContent = (PRICE*qty + fees()) + ' ' + t.jod;
     showStep('stepConfirmJo',3);
+    setBusy(btn, false);
   }catch(err){
     errBox.textContent = T[lang].netErr;
     errBox.style.display = 'block';
     errBox.scrollIntoView({behavior:'smooth', block:'center'});
-  }finally{
     setBusy(btn, false);
   }
 }
 
-async function submitWaitlist(){
+/* ---------- International checkout (USD, Stripe only) ---------- */
+var iqty = 1;
+function chgIQty(d){ iqty = Math.min(999, Math.max(1, iqty + d)); updateIntlTotals(); }
+function updateIntlTotals(){
+  var sub = INTL_UNIT * iqty, ship = intlShip(iqty);
+  document.getElementById('iQtyVal').textContent = iqty;
+  document.getElementById('iQtyMirror').textContent = iqty;
+  document.getElementById('iSub').textContent = sub;
+  document.getElementById('iDel').textContent = ship;
+  document.getElementById('iTot').textContent = sub + ship;
+  updateBulk('.il-bulk', iqty);
+}
+async function submitIntl(){
   var bad = false;
-  bad = markErr('wl_name', !document.getElementById('wl_name').value.trim()) || bad;
-  bad = markErr('wl_email', !/^\S+@\S+\.\S+$/.test(document.getElementById('wl_email').value)) || bad;
-  bad = markErr('wl_wa', !validPhone(document.getElementById('wl_wa').value)) || bad;
-  bad = markErr('wl_country', !document.getElementById('wl_country').value.trim()) || bad;
-  bad = markErr('wl_city', !document.getElementById('wl_city').value.trim()) || bad;
-  if(!document.getElementById('wl_consent').checked) bad = true;
-  var errBox = document.getElementById('wlError');
+  bad = markErr('il_name', !document.getElementById('il_name').value.trim()) || bad;
+  bad = markErr('il_email', !/^\S+@\S+\.\S+$/.test(document.getElementById('il_email').value)) || bad;
+  bad = markErr('il_wa', !validPhone(document.getElementById('il_wa').value)) || bad;
+  bad = markErr('il_country', !document.getElementById('il_country').value.trim()) || bad;
+  bad = markErr('il_city', !document.getElementById('il_city').value.trim()) || bad;
+  bad = markErr('il_addr', !document.getElementById('il_addr').value.trim()) || bad;
+  if(!document.getElementById('il_terms').checked) bad = true;
+  var errBox = document.getElementById('ilError');
   errBox.textContent = T[lang].formErr;
   errBox.style.display = bad ? 'block' : 'none';
   if(bad) return;
 
   var payload = {
-    type:'waitlist',
-    name: document.getElementById('wl_name').value.trim(),
-    email: document.getElementById('wl_email').value.trim(),
-    whatsapp: document.getElementById('wl_wa').value.trim(),
-    country: document.getElementById('wl_country').value.trim(),
-    city: document.getElementById('wl_city').value.trim(),
-    postal: document.getElementById('wl_postal').value.trim(),
-    expectedQty: document.getElementById('wl_qty').value,
-    buyingFor: document.getElementById('wl_for').value,
-    preferredLang: document.getElementById('wl_lang').value,
-    message: document.getElementById('wl_msg').value.trim(),
-    consent: document.getElementById('wl_consent').checked,
-    lang: lang
+    type:'order', region:'INTL', paymentMethod:'online', returnUrl: pageUrl(),
+    name: document.getElementById('il_name').value.trim(),
+    whatsapp: document.getElementById('il_wa').value.trim(),
+    email: document.getElementById('il_email').value.trim(),
+    country: document.getElementById('il_country').value.trim(),
+    city: document.getElementById('il_city').value.trim(),
+    address: document.getElementById('il_addr').value.trim(),
+    postal: document.getElementById('il_postal').value.trim(),
+    notes: document.getElementById('il_notes').value.trim(),
+    qty: iqty, lang: lang
   };
-
-  var btn = document.querySelector('#stepWaitlist .btn-block');
+  var btn = document.querySelector('#stepIntl .btn-block');
   setBusy(btn, true);
   try{
     var r = await sendToSheet(payload);
     if(!r || r.ok !== true) throw new Error(r && r.error);
-    showStep('stepConfirmWl',3);
+    if(r.pay_url){ window.location.href = r.pay_url; return; }
+    /* demo mode: show confirmation without charging */
+    var t = T[lang];
+    document.getElementById('cj_ordernum').textContent = r.orderNumber || '';
+    document.getElementById('cj_eta').textContent = t.etaIntl;
+    document.getElementById('cj_paymethod').textContent = t.payOnlineV;
+    document.getElementById('cj_total').textContent = '$' + (INTL_UNIT*iqty + intlShip(iqty)) + ' USD';
+    showStep('stepConfirmJo',3);
+    setBusy(btn, false);
   }catch(err){
     errBox.textContent = T[lang].netErr;
     errBox.style.display = 'block';
     errBox.scrollIntoView({behavior:'smooth', block:'center'});
-  }finally{
     setBusy(btn, false);
   }
 }
+
+/* ---------- Returning from Stripe ---------- */
+async function handlePaymentReturn(){
+  var q = new URLSearchParams(location.search);
+  if(q.get('paid') === '1' && q.get('session_id')){
+    overlay.classList.add('open'); document.body.style.overflow='hidden';
+    showStep('stepVerify',3);
+    try{
+      var r = await sendToSheet({ type:'verify', session_id: q.get('session_id') });
+      var t = T[lang];
+      if(r && r.ok && (r.paid || r.demo)){
+        document.getElementById('cj_ordernum').textContent = r.orderNumber || q.get('order') || '';
+        document.getElementById('cj_eta').textContent = (r.currency === 'USD') ? t.etaIntl : t.cjEtaV;
+        document.getElementById('cj_paymethod').textContent = t.payOnlineV;
+        if(r.amount){ document.getElementById('cj_total').textContent =
+          (r.currency==='JOD' ? (r.amount/1000)+' '+t.jod : '$'+(r.amount/100)+' '+r.currency); }
+        showStep('stepConfirmJo',3);
+      } else { showStep('stepCanceled',3); }
+    }catch(e){ showStep('stepCanceled',3); }
+    history.replaceState(null,'',location.pathname);
+  } else if(q.get('canceled') === '1'){
+    overlay.classList.add('open'); document.body.style.overflow='hidden';
+    showStep('stepCanceled',2);
+    history.replaceState(null,'',location.pathname);
+  }
+}
+handlePaymentReturn();
 
 /* ================= MOTION LAYER ================= */
 (function(){
@@ -1276,6 +1417,20 @@ async function submitWaitlist(){
     });
   });
   var st=document.createElement('style');st.textContent='@keyframes ripple{to{transform:scale(18);opacity:0}} .lang-switching{animation:langFade .24s ease} @keyframes langFade{50%{opacity:.86}}';document.head.appendChild(st);
+})();
+
+/* what's-in-the-box hover sync */
+(function(){
+  var rows=document.querySelectorAll('.inside-list>div');
+  function set(n){
+    rows.forEach(function(r,i){r.classList.toggle('is-on',i+1===n)});
+    document.querySelectorAll('.bv-badge').forEach(function(b){b.classList.toggle('is-on',+b.dataset.badge===n)});
+    document.querySelectorAll('.bv-item').forEach(function(it){it.classList.toggle('is-on',it.dataset.items.split(' ').indexOf(String(n))>-1)});
+  }
+  rows.forEach(function(r,i){
+    r.addEventListener('mouseenter',function(){set(i+1)});
+    r.addEventListener('mouseleave',function(){set(0)});
+  });
 })();
 
 updateTotals();
